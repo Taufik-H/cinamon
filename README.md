@@ -5,6 +5,7 @@ cinema movies breakdown
 ### windows
 ```py -3 -m venv venv```
 
-``` venv\Scripts\activate ```
+```. venv\Scripts\activate ```
 ``` pip install Flask requests ```
+bash``` pip install requests```
 
