@@ -67,5 +67,12 @@ def get_movies_list(popular = popular,tren_day = tren_day, tren_week = tren_week
 def movie_detail(movie_id):
     detail = urllib.request.urlopen("https://api.themoviedb.org/3/movie/"+movie_id+"?api_key="+api_key)
     details = detail.read()
-    dict = json.loads(details)
-    return render_template("detail.html")
+    d_movie = json.loads(details)
+    demovie = []
+    for dtl in d_movie:
+        dtl ={
+            "poster_path":"https://image.tmdb.org/t/p/w500"+d_movie["poster_path"]
+        }
+    demovie.append(dtl)
+    # return demovies
+    return render_template("detail.html",d_movie = d_movie, demovie = demovie)
