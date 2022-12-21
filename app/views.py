@@ -1,12 +1,16 @@
-from flask import Flask, render_template, jsonify
+from flask import Flask, render_template, url_for
 import requests,json,os,urllib.request
 from app import app
 
 api_key ="d304673657c45d10261cad6e3f07aeb8"
+
 #set api variable
 tren_week = "https://api.themoviedb.org/3/trending/movie/week?api_key="+api_key
 tren_day = "https://api.themoviedb.org/3/trending/movie/day?api_key="+api_key
 popular = "https://api.themoviedb.org/3/movie/popular?api_key="+api_key
+detail_api = "https://api.themoviedb.org/3/movie/{movie_id}?api_key="+api_key
+
+
 @app.route("/")
 def get_movies_list(popular = popular,tren_day = tren_day, tren_week = tren_week): 
     url = popular
@@ -14,9 +18,10 @@ def get_movies_list(popular = popular,tren_day = tren_day, tren_week = tren_week
     movies = response.read()
     dict = json.loads(movies)
     movies = []
-      
+    
     for movie in dict["results"]:
         movie = {
+            "movie_id":movie["id"],
             "title": movie["title"],
             "overview": movie["overview"],
             "original_title": movie["original_title"],
@@ -58,4 +63,16 @@ def get_movies_list(popular = popular,tren_day = tren_day, tren_week = tren_week
         trending_week.append(trends_week)
     # get trending
     return render_template("index.html", movie=movies, trends = trending_day, trends_week = trending_week)
-
+@app.route('/detail/<movie_id>')
+def movie_detail(movie_id):
+    detail = urllib.request.urlopen("https://api.themoviedb.org/3/movie/"+movie_id+"?api_key="+api_key)
+    details = detail.read()
+    d_movie = json.loads(details)
+    demovie = []
+    for dtl in d_movie:
+        dtl ={
+            "poster_path":"https://image.tmdb.org/t/p/w500"+d_movie["poster_path"]
+        }
+    demovie.append(dtl)
+    # return demovies
+    return render_template("detail.html",d_movie = d_movie, demovie = demovie)
