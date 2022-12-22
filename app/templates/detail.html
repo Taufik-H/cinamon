@@ -54,7 +54,7 @@
           <div class="col-lg-12">
               <div class="breadcrumb__links">
                   <a href="/"><i class="fa fa-home"></i> Home</a>
-                  <a href="./{{d_movie['id']}}">Detail</a>
+                  <a href="/detail/{{d_movie['id']}}">Detail</a>
               </div>
           </div>
       </div>
@@ -120,8 +120,7 @@
                           </div>
                       </div>
                       <div class="anime__details__btn">
-                          <a href="#" class="follow-btn"><i class="fa fa-heart-o"></i> Follow</a>
-                          <a href="#" class="watch-btn"><span>Watch Now</span> <i
+                          <a href="/trailer/{{d_movie.id}}" class="watch-btn"><span>Watch Trailer</span> <i
                               class="fa fa-angle-right"></i></a>
                           </div>
                       </div>

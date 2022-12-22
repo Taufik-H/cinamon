@@ -9,6 +9,7 @@ tren_week = "https://api.themoviedb.org/3/trending/movie/week?api_key="+api_key
 tren_day = "https://api.themoviedb.org/3/trending/movie/day?api_key="+api_key
 popular = "https://api.themoviedb.org/3/movie/popular?api_key="+api_key
 detail_api = "https://api.themoviedb.org/3/movie/{movie_id}?api_key="+api_key
+trailer_api = "https://api.themoviedb.org/3/movie/{movie_id}/videos?api_key=<<api_key>>&language=en-US"
 
 
 @app.route("/")
@@ -73,6 +74,40 @@ def movie_detail(movie_id):
         dtl ={
             "poster_path":"https://image.tmdb.org/t/p/w500"+d_movie["poster_path"]
         }
+        
+
     demovie.append(dtl)
     # return demovies
     return render_template("detail.html",d_movie = d_movie, demovie = demovie)
+
+@app.route('/trailer/<movie_id>')
+def trailer(movie_id):
+    trailer_api =requests.get("https://api.themoviedb.org/3/movie/"+movie_id+"/videos?api_key="+api_key+"&language=en-US")
+    trailers = trailer_api.json()
+    trailer = []
+    for tr in trailers["results"]:
+        if tr["type"] == "Trailer":   
+            tr = {
+                "name":tr["name"],
+                "key":tr["key"]
+            }
+        # for t in tr["list"]:
+        #     print(t)
+            trailer.append(tr)
+    # get review movie
+    review_api = requests.get("https://api.themoviedb.org/3/movie/"+movie_id+"/reviews?api_key="+api_key)
+    review_json = review_api.json()
+    reviewer = []
+    for rev in review_json["results"]:   
+        rev = {
+            "author":rev["author"],
+            "author_details":rev["author_details"],
+            "content":rev["content"],
+            "date":rev["created_at"]
+        }
+        reviewer.append(rev)
+
+    # return reviewer
+
+    #return value
+    return render_template('trailer.html',trailer = trailer[0],movie_id = movie_id, review = reviewer)
