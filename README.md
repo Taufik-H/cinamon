@@ -15,10 +15,10 @@ movies website made with flask and TMDB api.
   py -3 -m venv venv
   ```
   ```python
-  . venv\Scripts\activate
+  . venv/Scripts/activate
   ```
   ```python3
-  pip install Flask requests
+  pip install Flask requests flask_mysqldb
   ```
   ```python3
   flask --debug run
