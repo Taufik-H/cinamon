@@ -9,6 +9,7 @@ content%}
         <div class="breadcrumb__links">
           <a href="/"><i class="fa fa-home"></i> Home</a>
           <a href="/detail/{{d_movie['id']}}">Detail</a>
+          <span>{{d_movie.title}}</span>
         </div>
       </div>
     </div>
@@ -28,8 +29,6 @@ content%}
             data-setbg="{{dmv.poster_path}}"
           >
             {%endfor%}
-            <div class="comment"><i class="fa fa-comments"></i> 11</div>
-            <div class="view"><i class="fa fa-eye"></i> 9141</div>
           </div>
         </div>
         <div class="col-lg-9">
@@ -46,14 +45,7 @@ content%}
               </div>
             </div>
             <div class="anime__details__rating">
-              <div class="rating">
-                <a href="#"><i class="fa fa-star"></i></a>
-                <a href="#"><i class="fa fa-star"></i></a>
-                <a href="#"><i class="fa fa-star"></i></a>
-                <a href="#"><i class="fa fa-star"></i></a>
-                <a href="#"><i class="fa fa-star-half-o"></i></a>
-              </div>
-              <span>1.029 Votes</span>
+              <span class="b">1.029 Votes</span>
             </div>
             <p>{{d_movie["overview"]}}</p>
             <div class="anime__details__widget">
@@ -65,7 +57,8 @@ content%}
                     <li><span>Date aired:</span> Oct 02, 2019 to ?</li>
                     <li><span>Status:</span> Airing</li>
                     <li>
-                      <span>Genre:</span> Action, Adventure, Fantasy, Magic
+                      <span>Genre:</span>
+                      {%for gen in genre%} {{gen['name']}} {%endfor%}
                     </li>
                   </ul>
                 </div>
@@ -95,66 +88,26 @@ content%}
           <div class="section-title">
             <h5>Reviews</h5>
           </div>
+          {%for reviewers in review%}
           <div class="anime__review__item">
             <div class="anime__review__item__pic">
-              <img src="img/anime/review-1.jpg" alt="" />
+              <img
+                src="https://www.gravatar.com/avatar{{reviewers.author_details.avatar_path}}?s=64"
+                alt=""
+              />
             </div>
             <div class="anime__review__item__text">
-              <h6>Chris Curry - <span>1 Hour ago</span></h6>
-              <p>
-                whachikan Just noticed that someone categorized this as
-                belonging to the genre "demons" LOL
-              </p>
+              <h6>
+                {{reviewers["author"]}} -
+                <span>
+                  <small><i>{{reviewers.date[:10]}}</i></small></span
+                >
+              </h6>
+              <p>{{reviewers.content[:100]}}...</p>
+              <button class="btn btn-sm mt-2 btn-primary">View Comment</button>
             </div>
           </div>
-          <div class="anime__review__item">
-            <div class="anime__review__item__pic">
-              <img src="img/anime/review-2.jpg" alt="" />
-            </div>
-            <div class="anime__review__item__text">
-              <h6>Lewis Mann - <span>5 Hour ago</span></h6>
-              <p>Finally it came out ages ago</p>
-            </div>
-          </div>
-          <div class="anime__review__item">
-            <div class="anime__review__item__pic">
-              <img src="img/anime/review-3.jpg" alt="" />
-            </div>
-            <div class="anime__review__item__text">
-              <h6>Louis Tyler - <span>20 Hour ago</span></h6>
-              <p>Where is the episode 15 ? Slow update! Tch</p>
-            </div>
-          </div>
-          <div class="anime__review__item">
-            <div class="anime__review__item__pic">
-              <img src="img/anime/review-4.jpg" alt="" />
-            </div>
-            <div class="anime__review__item__text">
-              <h6>Chris Curry - <span>1 Hour ago</span></h6>
-              <p>
-                whachikan Just noticed that someone categorized this as
-                belonging to the genre "demons" LOL
-              </p>
-            </div>
-          </div>
-          <div class="anime__review__item">
-            <div class="anime__review__item__pic">
-              <img src="img/anime/review-5.jpg" alt="" />
-            </div>
-            <div class="anime__review__item__text">
-              <h6>Lewis Mann - <span>5 Hour ago</span></h6>
-              <p>Finally it came out ages ago</p>
-            </div>
-          </div>
-          <div class="anime__review__item">
-            <div class="anime__review__item__pic">
-              <img src="img/anime/review-6.jpg" alt="" />
-            </div>
-            <div class="anime__review__item__text">
-              <h6>Louis Tyler - <span>20 Hour ago</span></h6>
-              <p>Where is the episode 15 ? Slow update! Tch</p>
-            </div>
-          </div>
+          {%endfor%}
         </div>
         <div class="anime__details__form">
           <div class="section-title">

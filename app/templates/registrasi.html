@@ -1,0 +1,76 @@
+{%extends "components/base.html" %} {%block title%}Registrasi{%endblock%}
+{%block content%}
+
+<!-- Normal Breadcrumb Begin -->
+<section>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12 text-center">
+        <div class="normal__breadcrumb__text">
+          <h2>Sign Up</h2>
+          <p>Welcome to cinamon.</p>
+          {% with messages = get_flashed_messages(with_categories=true) %} {% if
+          messages %}
+          <div class="row justify-content-center">
+          <ul class="flashes mt-5 col-md-6">
+            {% for category, message in messages %}
+            <div
+              class="alert alert-{{ category }} alert-dismissible fade show"
+              role="alert"
+            >
+              <strong>{{ message }}!</strong>
+              <button
+                type="button"
+                class="close"
+                data-dismiss="alert"
+                aria-label="Close"
+              >
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+
+            {% endfor %}
+        </div>
+          </ul>
+          {% endif %} {% endwith %}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- Normal Breadcrumb End -->
+
+<!-- Signup Section Begin -->
+<section class="signup spad justify-content-center">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col">
+        <div class="login__form">
+          <h3>Sign Up</h3>
+          <form action="" method="post">
+            <div class="input__item">
+              <input type="text" placeholder="Username" name="username" />
+              <span class="icon_profile"></span>
+            </div>
+            <div class="input__item">
+              <input type="email" placeholder="Email address" name="email" />
+              <span class="icon_mail"></span>
+            </div>
+            <div class="input__item">
+              <input type="password" placeholder="Password" name="password" />
+              <span class="icon_lock"></span>
+            </div>
+            <button type="submit" class="site-btn">Sign up Now</button>
+          </form>
+          <h5>
+            Already have an account?
+            <a href="{{url_for('login')}}">Log In!</a>
+          </h5>
+        </div>
+      </div>
+      <div class="col-lg-6"></div>
+    </div>
+  </div>
+</section>
+<!-- Signup Section End -->
+{%endblock%}

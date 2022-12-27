@@ -12,7 +12,7 @@ content%}
               <div class="label">MOST POPULARS</div>
               <h2>{{movies.title}}</h2>
               <p>{{movies.overview[:50]}}...</p>
-              <a href="#"
+              <a href="/detail/{{movies.movie_id}}"
                 ><span>More details</span> <i class="fa fa-angle-right"></i
               ></a>
             </div>
@@ -42,7 +42,7 @@ content%}
           <div class="row">
             {%for movies in movie%}
             <div class="col-lg-4 col-md-6 col-sm-6">
-              <div class="product__item">
+              <div class="product__item" id="myUL">
                 <div
                   class="product__item__pic set-bg"
                   data-setbg="{{movies.poster_path}}"
