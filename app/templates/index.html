@@ -1,6 +1,8 @@
-{% extends "components/base.html"%} {%block title%}popular{%endblock%} {%block
+{% extends "components/base.html"%} {%block title%}Home{%endblock%} {%block
 content%}
 <!-- navbar -->
+<p hidden>{%block navhome%}active{%endblock%} {%block navlist%}{%endblock%}</p>
+
 <section class="hero">
   <div class="container">
     <div class="hero__slider owl-carousel">
@@ -12,6 +14,7 @@ content%}
               <div class="label">MOST POPULARS</div>
               <h2>{{movies.title}}</h2>
               <p>{{movies.overview[:50]}}...</p>
+
               <a href="/detail/{{movies.movie_id}}"
                 ><span>More details</span> <i class="fa fa-angle-right"></i
               ></a>
@@ -86,7 +89,7 @@ content%}
                 <div class="view">
                   <i class="fa fa-eye"> {{trend["popularity"]}}</i>
                 </div>
-                <h5><a href="#">{{trend.title}}</a></h5>
+                <h5><a href="/detail/{{trend.id}}">{{trend.title}}</a></h5>
               </div>
               {%endfor%} {%for trend_week in trends_week[:4]%}
               <div
@@ -97,7 +100,9 @@ content%}
                 <div class="view">
                   <i class="fa fa-eye"></i>{{trend_week.popularity}}
                 </div>
-                <h5><a href="#">{{trend_week.title}}</a></h5>
+                <h5>
+                  <a href="/detail/{{trend_week.id}}">{{trend_week.title}}</a>
+                </h5>
               </div>
               {%endfor%}
             </div>

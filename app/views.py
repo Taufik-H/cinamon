@@ -16,9 +16,9 @@ trailer_api = "https://api.themoviedb.org/3/movie/{movie_id}/videos?api_key=<<ap
 
 @app.route("/")
 def get_movies_list(popular=popular, tren_day=tren_day, tren_week=tren_week):
-    if 'loggedin' in session:
-    # cek status login
-        
+
+    # session login
+        session['isLogin'] = True
         url         = popular
         response    = urllib.request.urlopen(url)
         movies      = response.read()
@@ -44,9 +44,10 @@ def get_movies_list(popular=popular, tren_day=tren_day, tren_week=tren_week):
         url         = requests.get(tren_day)
         trend_day   = url.json()
         trending_day= []
-        
+   
         for trends_day in trend_day["results"]:
             trends_day = {
+                "id"        : trends_day["id"],
                 "title"     : trends_day["title"],
                 "popularity": int(trends_day["popularity"]),
                 "image"     : "https://image.tmdb.org/t/p/w500"+trends_day["backdrop_path"],
@@ -61,6 +62,7 @@ def get_movies_list(popular=popular, tren_day=tren_day, tren_week=tren_week):
         trending_week   = []
         for trends_week in trend_week["results"]:
             trends_week = {
+                "id"        : trends_week["id"],
                 "title"     : trends_week["title"],
                 "popularity": int(trends_week["popularity"]),
                 "image"     : "https://image.tmdb.org/t/p/w500"+trends_week["backdrop_path"],
@@ -71,12 +73,11 @@ def get_movies_list(popular=popular, tren_day=tren_day, tren_week=tren_week):
 
         # get trending
         return render_template("index.html", movie=movies, trends=trending_day, trends_week=trending_week)
-    flash('Please login!','danger')
-    return redirect(url_for('login'))
+
 
 @app.route('/detail/<movie_id>')
 def detail(movie_id):
-    if 'loggedin' in session:
+    
         detail  = requests.get(
                 "https://api.themoviedb.org/3/movie/"+movie_id+"?api_key="+api_key)
         details = detail.json()
@@ -108,12 +109,11 @@ def detail(movie_id):
                 }
                 reviewer.append(rev)
         return render_template("detail.html", d_movie=details, demovie=demovie, genre = genre, review = reviewer)
-    flash('Please login!','danger')
-    return redirect(url_for('login'))
+   
 
 @app.route('/trailer/<movie_id>')
 def trailer(movie_id):
-    if 'loggedin' in session:
+
         trailer_api     = requests.get("https://api.themoviedb.org/3/movie/" +
                                     movie_id+"/videos?api_key="+api_key+"&language=en-US")
         trailers        = trailer_api.json()
@@ -143,9 +143,13 @@ def trailer(movie_id):
 
             # return value
         return render_template('trailer.html', trailer=trailer[0], movie_id=movie_id, review=reviewer)
+
+@app.route('/mylist')
+def mylist():
+    if 'loggedin' in session:
+        return render_template('mylist.html')
     flash('Please login!','danger')
     return redirect(url_for('login'))
-
 
 
 

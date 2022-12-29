@@ -11,7 +11,9 @@ app.config['MYSQL_USER']      = 'root'
 app.config['MYSQL_PASSWORD']  = ''
 app.config['MYSQL_DB']        = 'cinamon'
 mysql = MySQL(app)
-
+def base():
+  session['isLogin'] = True
+  return render_template('components/base.html')
 @app.route('/registrasi',methods =('GET','POST'))
 def registrasi():
   if request.method == 'POST':
@@ -58,4 +60,4 @@ def login():
 def logout():
     session.pop('loggedin',None)
     session.pop('username',None)
-    return redirect(url_for('login'))
+    return redirect(url_for('get_movies_list'))
