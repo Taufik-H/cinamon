@@ -60,7 +60,6 @@
     <div id="preloder">
       <div class="loader"></div>
     </div>
-
     <header class="header">
       <div class="container">
         <div class="row">
@@ -69,25 +68,55 @@
               <a href="/">
                 <img
                   src="{{url_for('static',filename='image/logo.png')}}"
-                  alt="logo"
+                  alt=""
                 />
               </a>
             </div>
           </div>
           <div class="col-lg-8">
-            <div class="header__nav"></div>
+            <div class="header__nav">
+              <nav class="header__menu mobile-menu">
+                <ul>
+                  <li class="{%block navhome%}{%endblock%}">
+                    <a href="/">Homepage</a>
+                  </li>
+                  <li class="{%block navlist%}{%endblock%}">
+                    <a href="{{url_for('mylist')}}">My list</a>
+                  </li>
+                </ul>
+              </nav>
+            </div>
           </div>
+
           <div class="col-lg-2">
-            <div class="header__right">
+            <div class="header__right d-flex align-items-center ">
               <a href="#" class="search-switch"
                 ><span class="icon_search"></span
               ></a>
+              {% if 'loggedin' in session and session['loggedin'] %}
+              <span class="text-light text-sm mr-2">{{session.username}}</span>
+              <a href="{{url_for('logout')}}"
+                class="btn btn-sm btn-secondary "
+              >
+                Logout<span class="icon_profile ml-2"></span>
+                </a>
+                {%else%}
+                <span class="text-light text-sm mr-2">{{session.username}}</span>
+                <a href="{{url_for('login')}}"
+                  class="btn btn-sm btn-secondary "
+                >
+                  Login<span class="icon_profile ml-2"></span>
+                  </a>
+                {%endif%}
+              </div>
+              
             </div>
           </div>
         </div>
         <div id="mobile-menu-wrap"></div>
       </div>
     </header>
+
     {%block content%} {%endblock%} {%block scripts%}
 
     <!-- Footer Section Begin -->
@@ -143,6 +172,7 @@
       </div>
     </div>
     <!-- Search model end -->
+    <!-- bootstrap popperjs untuk -->
 
     <script src="{{url_for('static', filename='js/jquery-3.3.1.min.js')}}"></script>
     <script src="{{url_for('static', filename='js/bootstrap.min.js')}}"></script>
