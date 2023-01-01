@@ -16,7 +16,30 @@ content%}
   </div>
 </div>
 <!-- Breadcrumb End -->
+{% with messages = get_flashed_messages(with_categories=true) %} {% if
+  messages %}
+  <div class="row justify-content-center">
+  <ul class="flashes mt-5 col-md-6">
+    {% for category, message in messages %}
+    <div
+      class="alert alert-{{ category }} alert-dismissible fade show"
+      role="alert"
+    >
+      <strong>{{ message }}!</strong>
+      <button
+        type="button"
+        class="close"
+        data-dismiss="alert"
+        aria-label="Close"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
 
+    {% endfor %}
+</div>
+  </ul>
+  {% endif %} {% endwith %}
 <!-- Anime Section Begin -->
 <section class="anime-details spad">
   <div class="container">
@@ -73,9 +96,26 @@ content%}
                 </div>
               </div>
             </div>
-            <div class="anime__details__btn">
+
+            <div class="anime__details__btn d-flex">
+              <form action="" method="post">
+                <input
+                  type="hidden"
+                  name="user_id"
+                  value="{{session['user_id']}}"
+                />
+                <input type="hidden" name="movie_id" value="{{ movie_id }}" />
+                <input
+                  type="hidden"
+                  name="movie_name"
+                  value="{{ d_movie.title }}"
+                />
+                <button type="submit" class="follow-btn">
+                  <i class="fa fa-heart-o"></i> Add to list
+                </button>
+              </form>
               <a href="/trailer/{{d_movie.id}}" class="watch-btn"
-                ><span>Watch Trailer</span> <i class="fa fa-angle-right"></i
+                ><span>Watch Trailer </span> <i class="fa fa-angle-right"></i
               ></a>
             </div>
           </div>
