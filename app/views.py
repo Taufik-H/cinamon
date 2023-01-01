@@ -1,9 +1,16 @@
-from flask import Flask, render_template, url_for,session,redirect,flash
+from flask import Flask, render_template, url_for,session,redirect,flash,request
 import requests,json,os,urllib.request
+from flask_mysqldb import MySQL
 from app import app
-from app import auth
 
 
+
+app.secret_key = 'cinemabreakdown'
+app.config['MYSQL_HOST']      = 'localhost'
+app.config['MYSQL_USER']      = 'root'
+app.config['MYSQL_PASSWORD']  = ''
+app.config['MYSQL_DB']        = 'cinamon'
+mysql = MySQL(app)
 api_key = "d304673657c45d10261cad6e3f07aeb8"
 
 # set api variable
@@ -75,9 +82,11 @@ def get_movies_list(popular=popular, tren_day=tren_day, tren_week=tren_week):
         return render_template("index.html", movie=movies, trends=trending_day, trends_week=trending_week)
 
 
-@app.route('/detail/<movie_id>')
+@app.route('/detail/<movie_id>', methods=('GET', 'POST'))
 def detail(movie_id):
-    
+    # menyimpan route detail
+        session['last_url'] = request.referrer
+        # mengambil requests data dari api
         detail  = requests.get(
                 "https://api.themoviedb.org/3/movie/"+movie_id+"?api_key="+api_key)
         details = detail.json()
@@ -108,6 +117,27 @@ def detail(movie_id):
                     "date"          : rev["created_at"]
                 }
                 reviewer.append(rev)
+        # insert data ke database
+        if request.method == 'POST':
+            user_id = request.form['user_id']
+            movieId = request.form['movie_id']
+            movie_name = request.form['movie_name']
+            
+            # cek apakah data movie yang akan di simpan sudah ada.
+
+            cursor = mysql.connection.cursor()
+            cursor.execute('SELECT * FROM save_movie WHERE movie_id=%s OR movie_name=%s',(movieId,movie_name))
+            saved = cursor.fetchone()
+            if saved is None:
+                cursor.execute('INSERT INTO save_movie VALUES (NULL, %s,%s,%s)',(user_id,movie_name,movieId))
+                mysql.connection.commit()
+                flash('Movie saved!','success')
+                return redirect(session['last_url'])
+            else:
+                flash('Movie already Saved!!','danger')
+                # return redirect back, diambil last url yang sudah dibikin diatas 
+                return redirect(session['last_url'])
+        
         return render_template("detail.html", d_movie=details, demovie=demovie, genre = genre, review = reviewer)
    
 

@@ -60,15 +60,17 @@
     <div id="preloder">
       <div class="loader"></div>
     </div>
+    <!-- Header Section Begin -->
     <header class="header">
       <div class="container">
         <div class="row">
           <div class="col-lg-2">
             <div class="header__logo">
-              <a href="/">
+              <a href="./index.html">
                 <img
                   src="{{url_for('static',filename='image/logo.png')}}"
                   alt=""
+                  style="height: 23px; width: 95px"
                 />
               </a>
             </div>
@@ -81,41 +83,38 @@
                     <a href="/">Homepage</a>
                   </li>
                   <li class="{%block navlist%}{%endblock%}">
-                    <a href="{{url_for('mylist')}}">My list</a>
+                    <a href="#">Options <span></span></a>
+                    <ul class="dropdown">
+                      <li><a href="{{url_for('mylist')}} ">My List</a></li>
+                      {% if 'loggedin' in session and session['loggedin'] %}
+                      <li>
+                        <a href="{{url_for('logout')}}"
+                          >Logout ({{session.username}})</a
+                        >
+                      </li>
+                      {%else%}
+                      <li><a href="{{url_for('registrasi')}}">Sign Up</a></li>
+                      <li><a href="{{url_for('login')}}">Login</a></li>
+                      {%endif%}
+                    </ul>
                   </li>
                 </ul>
               </nav>
             </div>
           </div>
-
           <div class="col-lg-2">
-            <div class="header__right d-flex align-items-center ">
+            <div class="header__right">
               <a href="#" class="search-switch"
                 ><span class="icon_search"></span
               ></a>
-              {% if 'loggedin' in session and session['loggedin'] %}
-              <span class="text-light text-sm mr-2">{{session.username}}</span>
-              <a href="{{url_for('logout')}}"
-                class="btn btn-sm btn-secondary "
-              >
-                Logout<span class="icon_profile ml-2"></span>
-                </a>
-                {%else%}
-                <span class="text-light text-sm mr-2">{{session.username}}</span>
-                <a href="{{url_for('login')}}"
-                  class="btn btn-sm btn-secondary "
-                >
-                  Login<span class="icon_profile ml-2"></span>
-                  </a>
-                {%endif%}
-              </div>
-              
+              <a href="#"><span class="icon_profile"></span></a>
             </div>
           </div>
         </div>
         <div id="mobile-menu-wrap"></div>
       </div>
     </header>
+    <!-- Header End -->
 
     {%block content%} {%endblock%} {%block scripts%}
 
@@ -134,6 +133,7 @@
                 ><img
                   src="{{url_for('static',filename='image/logo.png')}}"
                   alt="logo"
+                  style="height: 20px; width: 93px"
               /></a>
             </div>
           </div>

@@ -12,7 +12,7 @@ app.config['MYSQL_PASSWORD']  = ''
 app.config['MYSQL_DB']        = 'cinamon'
 mysql = MySQL(app)
 def base():
-  session['isLogin'] = True
+  session['loggedin'] = True
   return render_template('components/base.html')
 @app.route('/registrasi',methods =('GET','POST'))
 def registrasi():
@@ -52,9 +52,11 @@ def login():
       else:
         session['loggedin'] = True
         session['username'] = akun[1]
+        session['user_id']  = akun[0]
+
         return redirect(url_for('get_movies_list'))
     return render_template('login.html')
-
+    
 # logout
 @app.route('/logout')
 def logout():

@@ -11,7 +11,7 @@ content%}
         <div class="row">
           <div class="col-lg-6">
             <div class="hero__text">
-              <div class="label">MOST POPULARS</div>
+              <div class="label">MOST POPULARS {{session['user_id']}}</div>
               <h2>{{movies.title}}</h2>
               <p>{{movies.overview[:50]}}...</p>
 
