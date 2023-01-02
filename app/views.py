@@ -1,6 +1,7 @@
 from flask import Flask, render_template, url_for,session,redirect,flash,request
 import requests,json,os,urllib.request
 from flask_mysqldb import MySQL
+import mysql.connector,MySQLdb
 from app import app
 
 
@@ -176,10 +177,16 @@ def trailer(movie_id):
 
 @app.route('/mylist')
 def mylist():
-    if 'loggedin' in session:
-        return render_template('mylist.html')
-    flash('Please login!','danger')
-    return redirect(url_for('login'))
+    # if 'loggedin' in session:
+        db = MySQLdb.connect("localhost","root","","cinamon" )
+        cur = db.cursor()
+        cur.execute("SELECT * FROM save_movie")
+        rows = []
+        
+
+
+    # flash('Please login!','danger')
+    # return redirect(url_for('login'))
 
 
 
