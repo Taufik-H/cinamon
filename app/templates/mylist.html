@@ -17,6 +17,7 @@ content%}
     </div>
   </div>
   <div class="p-5">
+    {%if row == []%}
     <div class="row justify-content-center">
       <div id="carouselExampleSlidesOnly" class="carousel">
         <div class="carousel-inner">
@@ -34,6 +35,31 @@ content%}
         </div>
       </div>
     </div>
+    {%else%}
+    <div class="row d-flex">
+      {%for data in row%}
+      <div class="col-4">
+        <div
+          class="card bg-dark text-white mb-3"
+          style="height: fit-content; width: fit-content"
+        >
+          <img
+            class="card-img"
+            src="https://image.tmdb.org/t/p/w500{{data.poster_path}}"
+            alt="{{data.movie_name}}"
+          />
+          <div class="card-img-overlay">
+            <h5 class="card-title">{{data.movie_name}}</h5>
+            <p class="card-text"></p>
+            <p class="card-text">Last updated 3 mins ago</p>
+          </div>
+        </div>
+      </div>
+
+      {%endfor%}
+    </div>
+
+    {%endif%}
   </div>
 </div>
 
