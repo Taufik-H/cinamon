@@ -29,6 +29,7 @@ def registrasi():
       cursor.execute('INSERT INTO user VALUES (NULL, %s,%s,%s)',(username,email,generate_password_hash(password)))
       mysql.connection.commit()
       flash('Registration Done!!','success')
+      return redirect(url_for('login'))
     else:
       flash('Username or email is already register','danger')
   
