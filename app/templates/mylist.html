@@ -49,11 +49,9 @@ content%}
             alt="{{data.movie_name}}"
           />
           <div class="card-img-overlay">
-            <h5 class="card-title">{{data.movie_name}}</h5>
-            <p class="card-text"></p>
-            <p class="card-text">Last updated 3 mins ago</p>
           </div>
         </div>
+        <a href="delete/{{data.id}}" class="text-white card-title">{{data.movie_name}}</a>
       </div>
 
       {%endfor%}

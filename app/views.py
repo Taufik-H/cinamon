@@ -120,7 +120,7 @@ def detail(movie_id):
         # insert data ke database
         if request.method == 'POST':
             user_id = request.form['user_id']
-            movieId = request.form['movie_id']
+            movieId = movie_id
             movie_name = request.form['movie_name']
             
             # cek apakah data movie yang akan di simpan sudah ada.
@@ -201,7 +201,18 @@ def mylist():
     flash('Please login!','danger')
     return redirect(url_for('login'))
 
+@app.route('/delete/<user_id>',methods=('GET', 'POST'))
+def delete(user_id):
+        # user_id = user_id
+        cursor = db.cursor()
+        delete = "DELETE FROM save_movie WHERE id=%s"
+        cursor.execute(delete,(user_id,))
+        db.commit()
+        return redirect(url_for('mylist'))
 
+
+
+    
 
 
 
