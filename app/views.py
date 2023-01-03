@@ -1,17 +1,16 @@
 from flask import Flask, render_template, url_for,session,redirect,flash,request
-import requests,json,os,urllib.request
-from flask_mysqldb import MySQL
-import mysql.connector,MySQLdb
+import requests,json,os,urllib.request,mysql.connector
 from app import app
 
+# connect database
+db = mysql.connector.connect(
+  host="localhost",
+  user="root",
+  password="",
+  database= "cinamon"
+)
 
 
-app.secret_key = 'cinemabreakdown'
-app.config['MYSQL_HOST']      = 'localhost'
-app.config['MYSQL_USER']      = 'root'
-app.config['MYSQL_PASSWORD']  = ''
-app.config['MYSQL_DB']        = 'cinamon'
-mysql = MySQL(app)
 api_key = "d304673657c45d10261cad6e3f07aeb8"
 
 # set api variable
@@ -126,12 +125,12 @@ def detail(movie_id):
             
             # cek apakah data movie yang akan di simpan sudah ada.
 
-            cursor = mysql.connection.cursor()
+            cursor = db.cursor()
             cursor.execute('SELECT * FROM save_movie WHERE movie_id=%s OR movie_name=%s',(movieId,movie_name))
             saved = cursor.fetchone()
             if saved is None:
                 cursor.execute('INSERT INTO save_movie VALUES (NULL, %s,%s,%s)',(user_id,movie_name,movieId))
-                mysql.connection.commit()
+                db.commit()
                 flash('Movie saved!','success')
                 return redirect(session['last_url'])
             else:
@@ -177,16 +176,31 @@ def trailer(movie_id):
 
 @app.route('/mylist')
 def mylist():
-    # if 'loggedin' in session:
-        db = MySQLdb.connect("localhost","root","","cinamon" )
-        cur = db.cursor()
-        cur.execute("SELECT * FROM save_movie")
-        rows = []
+
+    if 'loggedin' in session:
+        cursor = db.cursor()
+        cursor.execute("SELECT * FROM save_movie")
+        saved_movies = cursor.fetchall()
+        movies = []
+
+        for saved_movie in saved_movies:
+            movie_id= saved_movie[3]
+            response = requests.get(f'https://api.themoviedb.org/3/movie/{movie_id}?api_key='+api_key)
+            movie_data = response.json()
+            poster_path = movie_data["backdrop_path"]
+            movie = {
+            'id': saved_movie[0],
+            'user_id': saved_movie[1],
+            'movie_name': saved_movie[2],
+            'movie_id': saved_movie[3],
+            'poster_path': poster_path
+            }
+            movies.append(movie)
         
+        return render_template('mylist.html',row=movies)
+    flash('Please login!','danger')
+    return redirect(url_for('login'))
 
-
-    # flash('Please login!','danger')
-    # return redirect(url_for('login'))
 
 
 
