@@ -77,21 +77,28 @@ def forgotpassword():
     elif  username != data[1]:
       flash('username or password incorrect','danger')
     else:
+      session['username'] = data[1]
+      session['user_id']  = data[0]
       return redirect(url_for('fpform'))
   
   return render_template('forgotpassword.html')
 
 @app.route('/fpform',methods=('GET','POST'))
 def fpform():
-  # if request.method == 'POST':
-  #     password = request.form['password']
+  if request.method == 'POST':
+      user_id = request.form['user_id']
+      password = request.form['password']
+      password_hash = generate_password_hash(password)
     
-  #     cursor = db.cursor()
-  #     cursor.execute('INSERT INTO user VALUES (NULL, %s,%s,%s)',(username,email,generate_password_hash(password)))
-  #     mysql.connection.commit()
-  #     flash('Update password is Done!!','success')
+      cursor = mysql.connection.cursor()
+      cursor.execute(f"UPDATE user SET password='{password_hash}' WHERE id={user_id}")
+      mysql.connection.commit()
+      flash('Update password is Done!!','success')
+      return redirect(url_for('done'))
   return render_template('fpassword.html')
-
+@app.route('/done')
+def done():
+    return render_template('password_done.html')
 # logout
 @app.route('/logout')
 def logout():
