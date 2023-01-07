@@ -57,7 +57,41 @@ def login():
 
         return redirect(url_for('get_movies_list'))
     return render_template('login.html')
+
+  
+@app.route('/forgotpassword',methods=('GET','POST'))
+def forgotpassword():
+  if request.method == 'POST':
+    username = request.form['username']
+    email = request.form['email']
+
     
+    # check username / email
+    cursor = mysql.connection.cursor()
+    cursor.execute('SELECT * FROM user WHERE username=%s OR email=%s',(username,email))
+    data = cursor.fetchone()
+    if data is None:
+      flash('username or password is none','danger')
+    elif  email != data[2]:
+      flash('username or password incorrect','danger')
+    elif  username != data[1]:
+      flash('username or password incorrect','danger')
+    else:
+      return redirect(url_for('fpform'))
+  
+  return render_template('forgotpassword.html')
+
+@app.route('/fpform',methods=('GET','POST'))
+def fpform():
+  # if request.method == 'POST':
+  #     password = request.form['password']
+    
+  #     cursor = db.cursor()
+  #     cursor.execute('INSERT INTO user VALUES (NULL, %s,%s,%s)',(username,email,generate_password_hash(password)))
+  #     mysql.connection.commit()
+  #     flash('Update password is Done!!','success')
+  return render_template('fpassword.html')
+
 # logout
 @app.route('/logout')
 def logout():
