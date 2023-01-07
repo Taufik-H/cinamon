@@ -48,10 +48,14 @@ content%}
             src="https://image.tmdb.org/t/p/w500{{data.poster_path}}"
             alt="{{data.movie_name}}"
           />
-          <div class="card-img-overlay">
-          </div>
+          <div class="card-img-overlay"></div>
         </div>
-        <a href="delete/{{data.id}}" class="text-white card-title">{{data.movie_name}}</a>
+        <a href="detail/{{data.movie_id}}" class="text-white card-title"
+          >{{data.movie_name}}</a
+        >
+        <a href="delete/{{data.id}}" class="text-white card-title text-danger"
+          >| delete from list</a
+        >
       </div>
 
       {%endfor%}
