@@ -96,9 +96,12 @@ def detail(movie_id):
         for dtl in details: 
             dtl = {
                     # "genres" : genre["name"],
-                    "poster_path": "https://image.tmdb.org/t/p/w500"+details["poster_path"]
+                    "poster_path": "https://image.tmdb.org/t/p/w500"+details["poster_path"],
                 }
         demovie.append(dtl)
+        formatted_x = "{:.1f}".format(details['vote_average'])
+        vote_average = details['vote_average'] = formatted_x
+        # return vote_average
         for gen in details["genres"]:
                 gen = {
                     "name":gen["name"]
@@ -138,7 +141,7 @@ def detail(movie_id):
                 # return redirect back, diambil last url yang sudah dibikin diatas 
                 return redirect(session['last_url'])
         
-        return render_template("detail.html", d_movie=details, demovie=demovie, genre = genre, review = reviewer)
+        return render_template("detail.html",vote_average=vote_average, d_movie=details, demovie=demovie, genre = genre, review = reviewer)
    
 
 @app.route('/trailer/<movie_id>')
